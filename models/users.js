@@ -21,7 +21,6 @@ module.exports = function model(sequelize, types) {
       user_name: {
         type: types.STRING,
         allowNull: false,
-        unique: true,
       },
       email: {
         type: types.STRING,
@@ -31,10 +30,6 @@ module.exports = function model(sequelize, types) {
       user_password: {
         type: types.STRING,
         allowNull: false,
-      },
-      phone_no: {
-        type: types.STRING,
-        defaultValue: "",
       },
       token: {
         type: types.STRING,
