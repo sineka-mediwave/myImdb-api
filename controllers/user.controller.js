@@ -22,9 +22,11 @@ const addUserController = async (req, res, next) => {
         user_name: req.body.user_name,
         user_password: req.body.user_password,
       });
-      res.json({
-        addUser,
-      });
+      if (addUser) {
+        res.json({
+          message: `Welcome to Myimdb ${addUser.user_name}`,
+        });
+      }
     } else {
       return next({
         status: 400,
@@ -57,7 +59,7 @@ const loginController = async (req, res, next) => {
     );
     if (passwordMatch) {
       const payload = {
-        user_id: searchUser.user_id,
+        id: searchUser.id,
         user_name: searchUser.user_name,
       };
       const generated_token = jwt.sign(payload, config.jwtSecret);
@@ -66,7 +68,7 @@ const loginController = async (req, res, next) => {
         token: generated_token,
       });
     }
-    return res.status(403).json({ message: "Not valid" });
+    return res.status(403).json({ message: "Invalid User" });
   } catch (error) {
     return next({
       status: 400,
@@ -80,15 +82,14 @@ const getAccountController = async (req, res, next) => {
   //"select * from account_users au where id = $1";
   try {
     const getUserController = await models.users.findOne({
+      attributes: ["first_name", "last_name", "user_name", "email"],
       where: {
-        user_id: req.decoded.user_id,
+        id: req.decoded.id,
       },
       returning: true,
     });
 
-    res.json({
-      getUserController,
-    });
+    res.json(getUserController);
   } catch (error) {
     return next({
       status: 400,
@@ -110,16 +111,14 @@ const updateUserController = async (req, res, next) => {
       },
       {
         where: {
-          user_id: req.decoded.user_id,
+          id: req.decoded.id,
         },
         returning: true,
         individualHooks: true,
       }
     );
 
-    res.json({
-      updateUser,
-    });
+    res.json(req.body);
   } catch (error) {
     return next({
       status: 400,
