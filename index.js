@@ -6,6 +6,7 @@ const morgan = require("morgan");
 
 const { notfound } = require("./middleware/notfound.middleware");
 const { errorHandler } = require("./middleware/errorhandler.middleware");
+const userRouter = require("./routes/user.routes");
 
 const app = express();
 
@@ -20,9 +21,7 @@ app.use(jsonParser);
 app.use(urlencodedParser);
 
 //routes
-app.get("/", (req, res) => {
-  res.send("hello");
-});
+app.use("/", userRouter);
 
 // 404 handler
 app.use(notfound);
