@@ -8,12 +8,28 @@ module.exports = function model(sequelize, types) {
         primarykey: true,
         unique: true,
       },
+      user_id: {
+        type: types.UUID,
+        references: {
+          model: {
+            tableName: "users",
+          },
+          key: "user_id",
+        },
+        allowNull: false,
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+      image: {
+        type: types.STRING,
+        allowNull: false,
+      },
       title: {
         type: types.STRING,
         allowNull: false,
       },
       story: {
-        type: types.STRING,
+        type: types.TEXT,
         defaultValue: "",
       },
       language: {
