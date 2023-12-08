@@ -2,7 +2,7 @@ module.exports = function model(sequelize, types) {
   const ratings = sequelize.define(
     "ratings",
     {
-      rating_id: {
+      id: {
         type: types.UUID,
         defaultValue: types.UUIDV4,
         primaryKey: true,
@@ -18,7 +18,7 @@ module.exports = function model(sequelize, types) {
           model: {
             tableName: "users",
           },
-          key: "user_id",
+          key: "id",
         },
         allowNull: false,
         onDelete: "CASCADE",
@@ -30,7 +30,7 @@ module.exports = function model(sequelize, types) {
           model: {
             tableName: "movies",
           },
-          key: "movie_id",
+          key: "id",
         },
         allowNull: false,
         onDelete: "CASCADE",

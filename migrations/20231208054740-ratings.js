@@ -3,10 +3,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("ratings", {
-      rating_id: {
+      id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
-        primarykey: true,
+        primaryKey: true,
         unique: true,
       },
       rating: {
@@ -19,7 +19,7 @@ module.exports = {
           model: {
             tableName: "users",
           },
-          key: "user_id",
+          key: "id",
         },
         allowNull: false,
         onDelete: "CASCADE",
@@ -31,7 +31,7 @@ module.exports = {
           model: {
             tableName: "movies",
           },
-          key: "movie_id",
+          key: "id",
         },
         allowNull: false,
         onDelete: "CASCADE",

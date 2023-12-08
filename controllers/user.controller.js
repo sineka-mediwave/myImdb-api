@@ -28,10 +28,11 @@ const addUserController = async (req, res, next) => {
     } else {
       return next({
         status: 400,
-        message: "user already exits, check the email and username",
+        message: "user already exits",
       });
     }
   } catch (error) {
+    console.log(error);
     return next({
       status: 400,
       message: error.message,
@@ -60,19 +61,9 @@ const loginController = async (req, res, next) => {
         user_name: searchUser.user_name,
       };
       const generated_token = jwt.sign(payload, config.jwtSecret);
-      const updateUser = await models.users.update(
-        {
-          token: generated_token,
-        },
-        {
-          where: {
-            id: searchUser.id,
-          },
-          returning: true,
-        }
-      );
+
       return res.json({
-        updateUser,
+        token: generated_token,
       });
     }
     return res.status(403).json({ message: "Not valid" });
