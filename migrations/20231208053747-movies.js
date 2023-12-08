@@ -6,20 +6,8 @@ module.exports = {
       movie_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
-        primarykey: true,
+        primaryKey: true,
         unique: true,
-      },
-      user_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: "users",
-          },
-          key: "user_id",
-        },
-        allowNull: false,
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
       },
       image: {
         type: Sequelize.STRING,

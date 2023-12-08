@@ -5,7 +5,7 @@ module.exports = function model(sequelize, types) {
       rating_id: {
         type: types.UUID,
         defaultValue: types.UUIDV4,
-        primarykey: true,
+        primaryKey: true,
         unique: true,
       },
       rating: {

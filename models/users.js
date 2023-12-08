@@ -7,7 +7,7 @@ module.exports = function model(sequelize, types) {
       user_id: {
         type: types.UUID,
         defaultValue: types.UUIDV4,
-        primarykey: true,
+        primaryKey: true,
         unique: true,
       },
       first_name: {

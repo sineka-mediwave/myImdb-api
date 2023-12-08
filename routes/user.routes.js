@@ -23,13 +23,13 @@ router.post("/login", validate(loginSchema), loginController);
 
 //UPDATE USER DATA
 router.put(
-  "/user/:id",
+  "/users/:id",
   isAuthorised,
   validate(updateUserSchema),
   updateUserController
 );
 
 //VIEW THE USER DATA
-router.get("/user/:id", isAuthorised, getAccountController);
+router.get("/users/:id", isAuthorised, getAccountController);
 
 module.exports = router;
