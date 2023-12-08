@@ -8,11 +8,15 @@ module.exports = function model(sequelize, types) {
         primarykey: true,
         unique: true,
       },
-      name: {
+      title: {
         type: types.STRING,
         allowNull: false,
       },
-      about: {
+      story: {
+        type: types.STRING,
+        defaultValue: "",
+      },
+      language: {
         type: types.STRING,
         defaultValue: "",
       },
