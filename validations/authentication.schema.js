@@ -11,6 +11,7 @@ const signUpSchema = Joi.object({
     .pattern(new RegExp("^[a-zA-Z0-9^_-]"))
     .required(),
   user_password: Joi.string()
+    .min(8)
     .pattern(new RegExp("^[a-zA-Z0-9!@#$%^&*_=+-]{8,20}$"))
     .required(),
 });

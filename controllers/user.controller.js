@@ -30,7 +30,7 @@ const addUserController = async (req, res, next) => {
     } else {
       return next({
         status: 400,
-        message: "user already exits",
+        message: ["user already exits"],
       });
     }
   } catch (error) {

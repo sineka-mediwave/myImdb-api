@@ -14,7 +14,7 @@ module.exports = function model(sequelize, types) {
           model: {
             tableName: "users",
           },
-          key: "user_id",
+          key: "id",
         },
         allowNull: false,
         onDelete: "CASCADE",
@@ -47,6 +47,14 @@ module.exports = function model(sequelize, types) {
       timestamps: false,
     }
   );
+
+  Movies.associate = function (models) {
+    Movies.hasMany(models.ratings, {
+      as: "rating",
+      foreignKey: "movie_id",
+      sourceKey: "id",
+    });
+  };
 
   return Movies;
 };

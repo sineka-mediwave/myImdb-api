@@ -1,4 +1,5 @@
-const { models } = require("../config/sequalize-config");
+const { models, sequelize, Sequelize } = require("../config/sequalize-config");
+const ratings = require("../models/ratings");
 
 const addMoviesController = async (req, res, next) => {
   try {
@@ -21,13 +22,24 @@ const addMoviesController = async (req, res, next) => {
 
 const getMoviesController = async (req, res, next) => {
   try {
-    const getMovies = await models.users.findOne({
-      where: {
-        user_id: req.decoded.id,
-      },
-      returning: true,
+    const getMovies = await models.movies.findAll({
+      include: [
+        {
+          model: models.ratings,
+          as: "rating",
+          attributes: [],
+          group: ["movie_id"],
+          required: true,
+        },
+      ],
+      attributes: [
+        [
+          sequelize.fn("avg", sequelize.col("ratings.rating")),
+          "Overall_Rating",
+        ],
+      ],
+      logging: true,
     });
-
     res.json(getMovies);
   } catch (error) {
     return next({

@@ -1,6 +1,6 @@
 const bodyParser = require("body-parser");
 const config = require("./config/config");
-
+const cors = require("cors");
 const express = require("express");
 const morgan = require("morgan");
 
@@ -11,6 +11,7 @@ const movieRouter = require("./routes/movie.routes");
 
 const app = express();
 
+app.use(cors());
 app.use(morgan("dev"));
 // create application/json parser
 const jsonParser = bodyParser.json();
