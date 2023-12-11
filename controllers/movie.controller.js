@@ -27,11 +27,10 @@ const getMoviesController = async (req, res, next) => {
         {
           model: models.ratings,
           as: "rating",
-          attributes: [],
-          group: ["movie_id"],
           required: true,
         },
       ],
+      group: ["movie_id"],
       attributes: [
         [
           sequelize.fn("avg", sequelize.col("ratings.rating")),

@@ -12,6 +12,7 @@ const { ratingSchema } = require("../validations/rating.schema");
 const {
   addRatingController,
   overallRatingController,
+  overallRatingControllerDummy,
 } = require("../controllers/rating.controller");
 
 router.post("/", validate(movieSchema), isAuthorised, addMoviesController);
@@ -22,7 +23,8 @@ router.post(
   isAuthorised,
   addRatingController
 );
-// router.get("/", overallRatingController);
+router.get("/or", overallRatingController);
+router.get("/orm", overallRatingControllerDummy);
 router.get("/", getMoviesController);
 
 module.exports = router;
