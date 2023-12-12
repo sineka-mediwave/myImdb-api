@@ -50,6 +50,11 @@ module.exports = function model(sequelize, types) {
       foreignKey: "movie_id",
       targetKey: "id",
     });
+    ratings.belongsTo(models.users, {
+      as: "userRating",
+      foreignKey: "user_id",
+      targetKey: "id",
+    });
   };
 
   return ratings;

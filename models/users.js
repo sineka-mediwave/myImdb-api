@@ -57,5 +57,12 @@ module.exports = function model(sequelize, types) {
     }
   });
 
+  Users.associate = function (models) {
+    Users.hasMany(models.movies, {
+      as: "movie",
+      foreignKey: "user_id",
+      sourceKey: "id",
+    });
+  };
   return Users;
 };

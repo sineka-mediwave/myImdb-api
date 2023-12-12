@@ -7,12 +7,12 @@ const { isAuthorised } = require("../middleware/authorization.middleware");
 const {
   addMoviesController,
   getMoviesController,
+  getMovieController,
 } = require("../controllers/movie.controller");
 const { ratingSchema } = require("../validations/rating.schema");
 const {
   addRatingController,
   overallRatingController,
-  overallRatingControllerDummy,
 } = require("../controllers/rating.controller");
 
 router.post("/", validate(movieSchema), isAuthorised, addMoviesController);
@@ -23,8 +23,8 @@ router.post(
   isAuthorised,
   addRatingController
 );
-router.get("/or", overallRatingController);
-router.get("/orm", overallRatingControllerDummy);
+router.get("/o", overallRatingController);
 router.get("/", getMoviesController);
+router.get("/movie", getMovieController);
 
 module.exports = router;

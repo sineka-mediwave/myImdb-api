@@ -54,6 +54,11 @@ module.exports = function model(sequelize, types) {
       foreignKey: "movie_id",
       sourceKey: "id",
     });
+    Movies.hasMany(models.users, {
+      as: "addedBy",
+      foreignKey: "user_id",
+      sourceKey: "id",
+    });
   };
 
   return Movies;
