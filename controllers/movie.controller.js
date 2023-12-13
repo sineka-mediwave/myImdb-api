@@ -23,16 +23,16 @@ const getMoviesController = async (req, res, next) => {
   try {
     const getMovies = await models.movies.findAll();
 
-    // const overallRating = await models.ratings.findAll({
-    //   attributes: [
-    //     "movie_id",
-    //     [Sequelize.fn("AVG", Sequelize.col("rating")), "overall_rating"],
-    //   ],
-    //   logging: true,
-    //   group: ["movie_id"],
-    // });
+    const overallRating = await models.ratings.findAll({
+      attributes: [
+        "movie_id",
+        [Sequelize.fn("AVG", Sequelize.col("rating")), "overall_rating"],
+      ],
+      logging: true,
+      group: ["movie_id"],
+    });
 
-    res.json(getMovies);
+    res.json({ getMovies, overallRating });
   } catch (error) {
     return next({
       status: 400,
@@ -44,46 +44,27 @@ const getMoviesController = async (req, res, next) => {
 const getMovieController = async (req, res, next) => {
   try {
     const getMovie = await models.movies.findOne({
-      attributes: ["title"],
-      where: req.body.id,
+      where: { id: req.params.id },
       include: [
         {
-          model: models.ratings,
-          as: "rating",
+          association: "rating",
           attributes: ["rating"],
           include: [
             {
-              model: models.users,
-              as: "userRating",
+              association: "userRating",
               attributes: ["user_name"],
             },
           ],
         },
         {
-          model: models.users,
-          as: "addedBy",
-          attributes: ["user_name"],
+          association: "addedBy",
+          attributes: ["first_name"],
         },
       ],
       logging: true,
     });
-    const ratings = getMovie.ratings.map((rating) => ({
-      rating: rating.rating,
-      ratedBy: rating.userRating.user_name,
-    }));
-    const overallRating = getMovie.ratings.length
-      ? getMovie.ratings.reduce((total, rating) => total + rating.rating, 0) /
-        getMovie.ratings.length
-      : 0;
-    const movieWithFormattedData = {
-      movieName: getMovie.title,
-      addedBy: getMovie.addedBy.user_name,
-      ratings,
-      overallRating,
-    };
-    res.json({
-      getMovie,
-    });
+
+    res.json(getMovie);
   } catch (error) {
     return next({
       status: 400,
