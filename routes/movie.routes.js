@@ -25,6 +25,6 @@ router.post(
 );
 router.get("/o", overallRatingController);
 router.get("/", getMoviesController);
-router.get("/movie", getMovieController);
+router.get("/:id", getMovieController);
 
 module.exports = router;

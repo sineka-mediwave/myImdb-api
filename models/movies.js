@@ -54,7 +54,7 @@ module.exports = function model(sequelize, types) {
       foreignKey: "movie_id",
       sourceKey: "id",
     });
-    Movies.hasMany(models.users, {
+    Movies.belongsTo(models.users, {
       as: "addedBy",
       foreignKey: "user_id",
       sourceKey: "id",

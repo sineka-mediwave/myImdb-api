@@ -63,6 +63,11 @@ module.exports = function model(sequelize, types) {
       foreignKey: "user_id",
       sourceKey: "id",
     });
+    Users.hasMany(models.ratings, {
+      as: "addedRating",
+      foreignKey: "user_id",
+      sourceKey: "id",
+    });
   };
   return Users;
 };

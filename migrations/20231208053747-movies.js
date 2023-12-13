@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false,
       },
       story: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         defaultValue: "",
       },
       language: {

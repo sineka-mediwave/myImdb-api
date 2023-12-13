@@ -13,3 +13,7 @@
   `npm i bcryptjs jsonwebtoken`
 - dev dependencies
   `npm i -D nodemon`
+
+# Error
+
+- (s.replace)[https://stackoverflow.com/questions/48869975/typeerror-s-replace-is-not-a-function]
