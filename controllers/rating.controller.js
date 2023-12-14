@@ -36,34 +36,7 @@ const overallRatingController = async (req, res, next) => {
   }
 };
 
-const overallRatingControllerDummy = async (req, res, next) => {
-  try {
-    const overallRating = await models.ratings.findAll({
-      attributes: [
-        "movie_id",
-        [Sequelize.fn("AVG", Sequelize.col("rating")), "overall_rating"],
-      ],
-      group: ["movie_id"],
-      include: [
-        {
-          model: models.movies,
-          as: "movie",
-          required: true,
-          attributes: ["id"],
-        },
-      ],
-    });
-
-    res.json({ overallRating });
-  } catch (error) {
-    return next({
-      status: 400,
-      message: error.message,
-    });
-  }
-};
 module.exports = {
   addRatingController,
   overallRatingController,
-  overallRatingControllerDummy,
 };
