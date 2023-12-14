@@ -19,6 +19,25 @@ const addMoviesController = async (req, res, next) => {
   }
 };
 
+const getAllMoviesController = async (req, res, next) => {
+  try {
+    const getMovies = await models.movies.findAll({
+      include: [
+        {
+          association: "rating",
+          attributes: ["rating"],
+        },
+      ],
+    });
+    res.json(getMovies);
+  } catch (error) {
+    return next({
+      status: 400,
+      message: error.message,
+    });
+  }
+};
+
 const getMoviesController = async (req, res, next) => {
   try {
     const getMovies = await models.movies.findAll();
@@ -76,4 +95,5 @@ module.exports = {
   addMoviesController,
   getMoviesController,
   getMovieController,
+  getAllMoviesController,
 };

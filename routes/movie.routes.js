@@ -8,6 +8,7 @@ const {
   addMoviesController,
   getMoviesController,
   getMovieController,
+  getAllMoviesController,
 } = require("../controllers/movie.controller");
 const { ratingSchema } = require("../validations/rating.schema");
 const {
@@ -24,7 +25,7 @@ router.post(
   addRatingController
 );
 router.get("/o", overallRatingController);
-router.get("/", getMoviesController);
-router.get("/:id", getMovieController);
+router.get("/", getAllMoviesController);
+router.get("/:id", isAuthorised, getMovieController);
 
 module.exports = router;
