@@ -1,4 +1,5 @@
 const { models, Sequelize } = require("../config/sequalize-config");
+const { paginate } = require("../services/pagination");
 
 const addMoviesController = async (req, res, next) => {
   try {
@@ -19,17 +20,23 @@ const addMoviesController = async (req, res, next) => {
   }
 };
 
-const getAllMoviesController = async (req, res, next) => {
+const updateMovieController = async (req, res, next) => {
   try {
-    const getMovies = await models.movies.findAll({
-      include: [
-        {
-          association: "rating",
-          attributes: ["rating"],
-        },
-      ],
-    });
-    res.json(getMovies);
+    const updateMovie = await models.movies.update(
+      {
+        image: req.body.image,
+        title: req.body.title,
+        story: req.body.story,
+        language: req.body.language,
+        year: req.body.year,
+      },
+      {
+        where: { id: req.params.id || req.decoded.id },
+        returning: true,
+      }
+    );
+
+    res.json(updateMovie);
   } catch (error) {
     return next({
       status: 400,
@@ -38,20 +45,25 @@ const getAllMoviesController = async (req, res, next) => {
   }
 };
 
-const getMoviesController = async (req, res, next) => {
+const getAllMoviesController = async (req, res, next) => {
   try {
-    const getMovies = await models.movies.findAll();
-
-    const overallRating = await models.ratings.findAll({
-      attributes: [
-        "movie_id",
-        [Sequelize.fn("AVG", Sequelize.col("rating")), "overall_rating"],
-      ],
-      logging: true,
-      group: ["movie_id"],
-    });
-
-    res.json({ getMovies, overallRating });
+    const getMovies = await models.movies.findAndCountAll(
+      paginate(
+        {
+          include: [
+            {
+              association: "rating",
+              attributes: ["rating"],
+            },
+          ],
+          logging: true,
+          // where: {}, // conditions
+        },
+        { page: req.query.page & 1, pageSize: req.query.pagesize & 3 }
+      )
+    );
+    // res.json(getMovies);
+    res.json({ movies: getMovies.rows, totalCount: getMovies.count });
   } catch (error) {
     return next({
       status: 400,
@@ -93,7 +105,7 @@ const getMovieController = async (req, res, next) => {
 };
 module.exports = {
   addMoviesController,
-  getMoviesController,
+  updateMovieController,
   getMovieController,
   getAllMoviesController,
 };
