@@ -22,6 +22,17 @@ const addMoviesController = async (req, res, next) => {
 
 const updateMovieController = async (req, res, next) => {
   try {
+    const searchMovie = await models.movies.findOne({
+      where: { id: req.params.id },
+      logging: true,
+    });
+    console.log(searchMovie);
+    if (req.decoded.id !== searchMovie.user_id) {
+      return next({
+        status: 403,
+        message: "You don't have access to this movie",
+      });
+    }
     const updateMovie = await models.movies.update(
       {
         image: req.body.image,
@@ -31,7 +42,7 @@ const updateMovieController = async (req, res, next) => {
         year: req.body.year,
       },
       {
-        where: { id: req.params.id || req.decoded.id },
+        where: { id: req.params.id },
         returning: true,
       }
     );

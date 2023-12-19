@@ -5,7 +5,7 @@ const addRatingController = async (req, res, next) => {
     const addRating = await models.ratings.create({
       rating: req.xop.rating,
       user_id: req.decoded.id,
-      movie_id: req.xop.movie_id,
+      movie_id: req.params.id,
     });
     return res.json({
       addRating,
