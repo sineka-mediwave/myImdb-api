@@ -1,4 +1,5 @@
 const { models, Sequelize } = require("../config/sequalize-config");
+const Op = Sequelize.Op;
 const { paginate } = require("../services/pagination");
 
 const addMoviesController = async (req, res, next) => {
@@ -68,12 +69,11 @@ const getAllMoviesController = async (req, res, next) => {
             },
           ],
           logging: true,
-          // where: {}, // conditions
+          distinct: true,
         },
         { page: req.query.page & 1, pageSize: req.query.pagesize & 3 }
       )
     );
-    // res.json(getMovies);
     res.json({ movies: getMovies.rows, totalCount: getMovies.count });
   } catch (error) {
     return next({
@@ -82,6 +82,41 @@ const getAllMoviesController = async (req, res, next) => {
     });
   }
 };
+
+// const getAllMoviesController = async (req, res, next) => {
+//   try {
+//     let whereQuery = {};
+//     if (req.query.search) {
+//       whereQuery.title = {
+//         [Op.iLike]: `%${req.query.search}%`,
+//       };
+//     }
+//     const getMovies = await models.movies.findAndCountAll(
+//       paginate({
+//         include: [
+//           {
+//             association: "rating",
+//             attributes: ["rating"],
+//           },
+//         ],
+//         logging: true,
+//         where: whereQuery,
+//         distinct: true,
+//       }),
+//       {
+//         page: req.query.page & 1,
+//         pageSize: req.query.pagesize & 3,
+//       }
+//     );
+
+//     res.json({ movies: getMovies.rows, totalCount: getMovies.count });
+//   } catch (error) {
+//     return next({
+//       status: 400,
+//       message: error.message,
+//     });
+//   }
+// };
 
 const getMovieController = async (req, res, next) => {
   try {
@@ -114,9 +149,31 @@ const getMovieController = async (req, res, next) => {
     });
   }
 };
+
+// To search
+const searchController = async (req, res, next) => {
+  try {
+    const searchQuery = await models.movies.findAll({
+      where: {
+        title: {
+          [Op.iLike]: `%${req.query.search}%`,
+        },
+      },
+      logging: true,
+    });
+    return res.json(searchQuery);
+  } catch (error) {
+    return next({
+      status: 400,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addMoviesController,
   updateMovieController,
   getMovieController,
   getAllMoviesController,
+  searchController,
 };
