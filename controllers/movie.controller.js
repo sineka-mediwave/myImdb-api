@@ -71,7 +71,7 @@ const getAllMoviesController = async (req, res, next) => {
           logging: true,
           distinct: true,
         },
-        { page: req.query.page & 1, pageSize: req.query.pagesize & 3 }
+        { page: req.query.page || 1, pageSize: req.query.pagesize || 3 }
       )
     );
     res.json({ movies: getMovies.rows, totalCount: getMovies.count });
@@ -161,7 +161,14 @@ const searchController = async (req, res, next) => {
       },
       logging: true,
     });
-    return res.json(searchQuery);
+    if (searchQuery.length == 0) {
+      next({
+        status: 400,
+        message: ["Movie not found"],
+      });
+    } else {
+      return res.json(searchQuery);
+    }
   } catch (error) {
     return next({
       status: 400,
