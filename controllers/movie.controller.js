@@ -57,58 +57,23 @@ const updateMovieController = async (req, res, next) => {
   }
 };
 
-const getAllMoviesController = async (req, res, next) => {
-  try {
-    const getMovies = await models.movies.findAndCountAll(
-      paginate(
-        {
-          include: [
-            {
-              association: "rating",
-              attributes: ["rating"],
-            },
-          ],
-          logging: true,
-          distinct: true,
-        },
-        { page: req.query.page || 1, pageSize: req.query.pagesize || 3 }
-      )
-    );
-    res.json({ movies: getMovies.rows, totalCount: getMovies.count });
-  } catch (error) {
-    return next({
-      status: 400,
-      message: error.message,
-    });
-  }
-};
-
 // const getAllMoviesController = async (req, res, next) => {
 //   try {
-//     let whereQuery = {};
-//     if (req.query.search) {
-//       whereQuery.title = {
-//         [Op.iLike]: `%${req.query.search}%`,
-//       };
-//     }
 //     const getMovies = await models.movies.findAndCountAll(
-//       paginate({
-//         include: [
-//           {
-//             association: "rating",
-//             attributes: ["rating"],
-//           },
-//         ],
-//         logging: true,
-//         where: whereQuery,
-//         distinct: true,
-//       }),
-//       {
-//         page: req.query.page & 1,
-//         pageSize: req.query.pagesize & 3,
-//       }
+//       paginate(
+//         {
+//           include: [
+//             {
+//               association: "rating",
+//               attributes: ["rating"],
+//             },
+//           ],
+//           logging: true,
+//           distinct: true,
+//         },
+//         { page: req.query.page || 1, pageSize: req.query.pagesize || 3 }
+//       )
 //     );
-
 //     res.json({ movies: getMovies.rows, totalCount: getMovies.count });
 //   } catch (error) {
 //     return next({
@@ -151,23 +116,38 @@ const getMovieController = async (req, res, next) => {
 };
 
 // To search
-const searchController = async (req, res, next) => {
+const getAllMoviesController = async (req, res, next) => {
   try {
-    const searchQuery = await models.movies.findAll({
-      where: {
-        title: {
-          [Op.iLike]: `%${req.query.search}%`,
+    const searchQuery = await models.movies.findAndCountAll(
+      paginate(
+        {
+          include: [
+            {
+              association: "rating",
+              attributes: ["rating"],
+            },
+          ],
+          where: {
+            title: {
+              [Op.iLike]: `%${req.query.search || ""}%`,
+            },
+          },
+          distinct: true,
+          logging: true,
         },
-      },
-      logging: true,
-    });
+        { page: req.query.page || 1, pageSize: req.query.pagesize || 3 }
+      )
+    );
     if (searchQuery.length == 0) {
       next({
         status: 400,
         message: ["Movie not found"],
       });
     } else {
-      return res.json(searchQuery);
+      return res.json({
+        movies: searchQuery.rows,
+        totalCount: searchQuery.count,
+      });
     }
   } catch (error) {
     return next({
@@ -182,5 +162,4 @@ module.exports = {
   updateMovieController,
   getMovieController,
   getAllMoviesController,
-  searchController,
 };

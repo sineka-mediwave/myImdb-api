@@ -9,13 +9,12 @@ const {
   getMovieController,
   getAllMoviesController,
   updateMovieController,
-  searchController,
 } = require("../controllers/movie.controller");
 const { ratingSchema } = require("../validations/rating.schema");
 const { addRatingController } = require("../controllers/rating.controller");
 
 router.get("/", getAllMoviesController);
-router.get("/search", searchController);
+// router.get("/search", searchController);
 
 router.post("/", validate(movieSchema), isAuthorised, addMoviesController);
 router.get("/:id", isAuthorised, getMovieController);
