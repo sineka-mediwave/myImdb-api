@@ -57,32 +57,6 @@ const updateMovieController = async (req, res, next) => {
   }
 };
 
-// const getAllMoviesController = async (req, res, next) => {
-//   try {
-//     const getMovies = await models.movies.findAndCountAll(
-//       paginate(
-//         {
-//           include: [
-//             {
-//               association: "rating",
-//               attributes: ["rating"],
-//             },
-//           ],
-//           logging: true,
-//           distinct: true,
-//         },
-//         { page: req.query.page || 1, pageSize: req.query.pagesize || 3 }
-//       )
-//     );
-//     res.json({ movies: getMovies.rows, totalCount: getMovies.count });
-//   } catch (error) {
-//     return next({
-//       status: 400,
-//       message: error.message,
-//     });
-//   }
-// };
-
 const getMovieController = async (req, res, next) => {
   try {
     const getMovie = await models.movies.findOne({
@@ -118,6 +92,10 @@ const getMovieController = async (req, res, next) => {
 // To search
 const getAllMoviesController = async (req, res, next) => {
   try {
+    // let order = "ASC";
+    if (req.query.sortby) {
+      order = req.query.sortby;
+    }
     const searchQuery = await models.movies.findAndCountAll(
       paginate(
         {
@@ -127,11 +105,13 @@ const getAllMoviesController = async (req, res, next) => {
               attributes: ["rating"],
             },
           ],
+
           where: {
             title: {
               [Op.iLike]: `%${req.query.search || ""}%`,
             },
           },
+          order: [["title", order]],
           distinct: true,
           logging: true,
         },
