@@ -4,7 +4,7 @@ const config = require("../config/config");
 const { sequelize, models, Sequelize } = require("../config/sequalize-config");
 const Op = Sequelize.Op;
 
-//creating new user account
+//CREATE - creating new user account
 const addUserController = async (req, res, next) => {
   try {
     const searchUser = await models.users.findAndCountAll({
@@ -77,7 +77,7 @@ const loginController = async (req, res, next) => {
   }
 };
 
-// view the account details
+//READ - view the account details
 const getAccountController = async (req, res, next) => {
   //"select * from account_users au where id = $1";
   try {
@@ -98,7 +98,7 @@ const getAccountController = async (req, res, next) => {
   }
 };
 
-//updating the userData
+//PUT - updating the userData
 const updateUserController = async (req, res, next) => {
   try {
     const updateUser = await models.users.update(

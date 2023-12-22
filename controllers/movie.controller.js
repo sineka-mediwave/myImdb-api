@@ -2,6 +2,7 @@ const { models, Sequelize } = require("../config/sequalize-config");
 const Op = Sequelize.Op;
 const { paginate } = require("../services/pagination");
 
+//CREATE
 const addMoviesController = async (req, res, next) => {
   try {
     const addMovie = await models.movies.create({
@@ -21,6 +22,7 @@ const addMoviesController = async (req, res, next) => {
   }
 };
 
+//UPDATE
 const updateMovieController = async (req, res, next) => {
   try {
     const searchMovie = await models.movies.findOne({
@@ -57,6 +59,7 @@ const updateMovieController = async (req, res, next) => {
   }
 };
 
+//READ
 const getMovieController = async (req, res, next) => {
   try {
     const getMovie = await models.movies.findOne({
@@ -89,10 +92,10 @@ const getMovieController = async (req, res, next) => {
   }
 };
 
-// To search
+// All movies
 const getAllMoviesController = async (req, res, next) => {
   try {
-    // let order = "ASC";
+    let order = "ASC";
     if (req.query.sortby) {
       order = req.query.sortby;
     }
@@ -137,9 +140,11 @@ const getAllMoviesController = async (req, res, next) => {
   }
 };
 
+//DELETE
+
 module.exports = {
-  addMoviesController,
-  updateMovieController,
-  getMovieController,
   getAllMoviesController,
+  addMoviesController,
+  getMovieController,
+  updateMovieController,
 };
