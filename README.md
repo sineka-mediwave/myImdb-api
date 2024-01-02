@@ -14,6 +14,17 @@
 - dev dependencies
   `npm i -D nodemon`
 
-# Error
+## Error
 
 - (s.replace)[https://stackoverflow.com/questions/48869975/typeerror-s-replace-is-not-a-function]
+
+## Transaction
+
+`sequalize.transaction`
+
+- Sequelize will start a transaction
+- Then, Sequelize will execute the callback you provided
+- If your callback throws, Sequelize will automatically rollback the transaction
+- If your callback finishes successfully, Sequelize will automatically commit the transaction
+
+(transaction)[https://sequelize.org/docs/v7/querying/transactions/]
