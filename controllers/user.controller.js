@@ -132,7 +132,6 @@ const updatePasswordController = async (req, res, next) => {
     const searchUser = await models.users.findOne({
       where: { id: req.decoded.id },
     });
-    console.log(searchUser);
 
     if (searchUser === null) {
       return next({
@@ -144,9 +143,7 @@ const updatePasswordController = async (req, res, next) => {
         req.body.oldPassword,
         searchUser.user_password
       );
-      console.log("password entry");
 
-      console.log(passwordMatch);
       if (passwordMatch) {
         const updatedPassword = await models.users.update(
           {
