@@ -150,7 +150,7 @@ const updatePasswordController = async (req, res, next) => {
       if (passwordMatch) {
         const updatedPassword = await models.users.update(
           {
-            user_password: req.body.new_password,
+            user_password: req.body.newPassword,
           },
           {
             where: {
