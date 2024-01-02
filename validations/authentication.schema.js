@@ -36,8 +36,19 @@ const updateUserSchema = Joi.object({
   //   .optional(),
 });
 
+const updatePasswordSchema = Joi.object({
+  oldPassword: Joi.string()
+
+    .pattern(new RegExp("^[a-zA-Z0-9!@#$%^&*_=+-]{8,20}$"))
+    .required(),
+  newPassword: Joi.string()
+    .min(8)
+    .pattern(new RegExp("^[a-zA-Z0-9!@#$%^&*_=+-]{8,20}$"))
+    .required(),
+});
 module.exports = {
   signUpSchema,
   updateUserSchema,
   loginSchema,
+  updatePasswordSchema,
 };

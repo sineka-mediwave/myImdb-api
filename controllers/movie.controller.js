@@ -1,4 +1,4 @@
-const { models, Sequelize } = require("../config/sequalize-config");
+const { models, Sequelize, sequelize } = require("../config/sequalize-config");
 const Op = Sequelize.Op;
 const { paginate } = require("../services/pagination");
 
@@ -145,7 +145,6 @@ const deleteMovieController = async (req, res, next) => {
   try {
     const getMovie = await models.movies.findOne({
       where: { id: req.params.id },
-      returning: true,
     });
     if (!getMovie) {
       return next({
@@ -159,15 +158,15 @@ const deleteMovieController = async (req, res, next) => {
         message: "You don't have access to this movie",
       });
     } else {
+      // const result = await sequelize.transaction(async () => {
       const deleteMovie = await models.movies.destroy({
         where: { id: req.params.id },
         returning: true,
       });
 
-      res.json(deleteMovie);
+      res.json({ deleteMovie });
+      // });
     }
-
-    res.send(getMovie);
   } catch (error) {
     return next({
       status: 400,
