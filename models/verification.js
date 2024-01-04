@@ -8,7 +8,18 @@ module.exports = function model(sequelize, types) {
         primaryKey: true,
         unique: true,
       },
-
+      verification_type: {
+        type: types.STRING,
+        allowNull: false,
+      },
+      otp: {
+        type: types.INTEGER,
+        allowNull: false,
+      },
+      expiresAt: {
+        type: types.BIGINT,
+        allowNull: false,
+      },
       user_id: {
         type: types.UUID,
         references: {
@@ -25,7 +36,6 @@ module.exports = function model(sequelize, types) {
 
     {
       tableName: "verification",
-      timestamps: false,
     }
   );
 

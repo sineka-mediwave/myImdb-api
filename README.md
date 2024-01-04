@@ -14,6 +14,13 @@
 - dev dependencies
   `npm i -D nodemon`
 
+## to create table
+
+To upgrade the db
+`npx sequelize-cli db:migrate`
+To downgrade the db
+`npx sequelize-cli db:migrate:undo`
+
 ## Error
 
 - (s.replace)[https://stackoverflow.com/questions/48869975/typeerror-s-replace-is-not-a-function]

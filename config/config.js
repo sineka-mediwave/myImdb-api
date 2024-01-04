@@ -17,6 +17,7 @@ const envConfigs = {
   port: process.env.PORT,
   host: process.env.HOST,
   jwtSecret: "shop-secret",
+  fileSavePath: process.env.FILE_STORAGE_PATH,
 };
 
 module.exports = { ...envConfigs };
