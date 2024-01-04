@@ -40,14 +40,15 @@ const forgetPassword = async (req, res, next) => {
           <div style="overflow:auto;line-height:2; color: #000">
           <div style="margin:50px auto;width:70%;padding:20px 0">
             <div style="border-bottom:1px solid #eee">
-              <a href="" style="font-size:1.4em;background-color: #000;color: #f5c518;padding: 5px; border-radius: 5px;text-decoration:none;font-weight:600">MyIMDb</a>
+              <a href="" style="font-size:1.4em;background-color: #000;color: #f5c518;padding: 5px; border-radius: 5px;text-decoration:none;font-weight:600">
+              MyIMDb</a>
             </div>
             <p style="font-size:18px">Hi,</p>
             <p>Forget Password Verification mai. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes. </p>
             <p>Click 
               <a href="" style="color: #00466a;text-decoration:none">here</a> to view the page.</p>
-            <h2 style="background: #f5c518;margin: 0 auto;width: max-content;padding: 0 10px;color: #000;border-radius: 4px;">324457</h2>
-            <p style="font-size:0.9em;">Regards,<br />Your Brand</p>
+            <h2 style="background: #f5c518;margin: 0 auto;width: max-content;padding: 0 10px;color: #000;border-radius: 4px;">${otp}</h2>
+            <p style="font-size:0.9em;">Regards,<br />MyIMDb</p>
             <hr style="border:none;border-top:1px solid #eee" />
             <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
               <p>my-Imdb-website</p>
@@ -77,6 +78,21 @@ const forgetPassword = async (req, res, next) => {
   }
 };
 
+const otpVerification = async (req, res, next) => {
+  try {
+    const searchUser = await models.verification.findOne({
+      //   attributes: ["id"],
+      where: { otp: req.body.otp },
+    });
+    res.json(searchUser);
+  } catch (error) {
+    return next({
+      status: 400,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   forgetPassword,
+  otpVerification,
 };
