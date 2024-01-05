@@ -1,27 +1,29 @@
-module.exports = function model(sequelize, types) {
+// const { DataTypes } = require("sequelize");
+
+module.exports = function model(sequelize, DataTypes) {
   const verification = sequelize.define(
     "verification",
     {
       id: {
-        type: types.UUID,
-        defaultValue: types.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         unique: true,
       },
       verification_type: {
-        type: types.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
       otp: {
-        type: types.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       expiresAt: {
-        type: types.BIGINT,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       user_id: {
-        type: types.UUID,
+        type: DataTypes.UUID,
         references: {
           model: {
             tableName: "users",

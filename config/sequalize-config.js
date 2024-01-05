@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
   {
     host: config.development.host,
     dialect: "postgres",
+    timezone: "+05:30",
     logging: true,
   }
 );

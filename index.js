@@ -9,6 +9,7 @@ const { notfound } = require("./middleware/notfound.middleware");
 const { errorHandler } = require("./middleware/errorhandler.middleware");
 const userRouter = require("./routes/user.routes");
 const movieRouter = require("./routes/movie.routes");
+const { multerupload } = require("./middleware/multerUpload.middleware");
 
 const app = express();
 
@@ -27,23 +28,23 @@ app.use(urlencodedParser);
 app.use("/", userRouter);
 app.use("/movies", movieRouter);
 
-app.post("/test-mail", async function (req, res) {
-  const options = {
-    from: `sender<${mailConfig.email}>`,
-    to: "sineka@mindwaveventures.com",
-    subject: "test mail",
-    text: "Hello", // plain text body
-    // html: `<button>test mail ${otp} </button> <a href="${url}" target="_blank">View</a>`, // html body
-  };
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
-  transporter.sendMail(options, (error, info) => {
-    if (error) console.log("\n mail error..", error);
-    return console.log("\n success...", info);
-  });
-
-  res.json("sending mail");
-});
-
+app.post(
+  "/upload",
+  multerupload("").single("file"),
+  async function (err, req, res, next) {
+    console.log("\n req.file...", req.file);
+    // const image = req.file;
+    // if (!image) {
+    //   return next({ status: 400, message: "upload file" });
+    // }
+    console.log(err);
+    return res.json({
+      file: req.file,
+    });
+  }
+);
 // 404 handler
 app.use(notfound);
 

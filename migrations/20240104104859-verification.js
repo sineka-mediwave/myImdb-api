@@ -18,7 +18,7 @@ module.exports = {
         allowNull: false,
       },
       expiresAt: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       user_id: {

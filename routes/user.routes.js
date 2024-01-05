@@ -20,6 +20,7 @@ const {
   forgetPassword,
   otpVerification,
 } = require("../controllers/forgetPassword.controller");
+// const { otpVerification } = require("../controllers/otpVerification");
 
 //CREATE USER ACCOUNT
 router.post("/signup", validate(signUpSchema), addUserController);
@@ -43,7 +44,7 @@ router.put(
 );
 
 router.post("/forget-password", forgetPassword);
-router.post("/otp-verification", otpVerification);
+router.post("/verify/otp/:id", otpVerification);
 //VIEW THE USER DATA
 router.get("/u/account", isAuthorised, getAccountController);
 
